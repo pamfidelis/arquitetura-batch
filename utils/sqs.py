@@ -1,6 +1,6 @@
-import boto3
 from botocore.exceptions import ClientError
 import logging
+import boto3
 
 logger = logging.getLogger(__name__)
 
@@ -10,15 +10,15 @@ class SQSQueue:
         cls.queue = sqs.get_queue_by_name(QueueName=queue_name)
 
 
-    def mock_send_message(cls, bucket, bucket_key):
+    def mock_send_message(cls, s3_bucket, s3_bucket_file):
         try:
             cls.queue.send_message(MessageBody='s3_event', MessageAttributes={
                 's3_bucket': {
-                    'StringValue': bucket,
+                    'StringValue': s3_bucket,
                     'DataType': 'String'
                 },
-                's3_bucket_key': {
-                    'StringValue': bucket_key,
+                's3_bucket_file': {
+                    'StringValue': s3_bucket_file,
                     'DataType': 'String'
                 }
             })
@@ -36,7 +36,7 @@ class SQSQueue:
             
             cls.message = messages[0]
             s3_bucket = cls.message.message_attributes['s3_bucket']['StringValue']
-            s3_bucket_key = cls.message.message_attributes['s3_bucket_key']['StringValue']
+            s3_bucket_key = cls.message.message_attributes['s3_bucket_file']['StringValue']
             
 
         except ClientError as error:
