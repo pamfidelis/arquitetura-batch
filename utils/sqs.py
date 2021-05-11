@@ -1,50 +1,50 @@
 import boto3
 from botocore.exceptions import ClientError
 import logging
-import sys
 
 logger = logging.getLogger(__name__)
-# Get the service resource
-sqs = boto3.resource('sqs')
 
-# Get the queue
-queue = sqs.get_queue_by_name(QueueName='arq-batch-sqs')
+class SQSQueue:
+    def __init__(cls, queue_name):
+        sqs = boto3.resource('sqs')
+        cls.queue = sqs.get_queue_by_name(QueueName=queue_name)
 
-def receive_messages(queue, max_number, wait_time):
-    """
-    Receive a batch of messages in a single request from an SQS queue.
 
-    Usage is shown in usage_demo at the end of this module.
+    def mock_send_message(cls, bucket, bucket_key):
+        try:
+            cls.queue.send_message(MessageBody='s3_event', MessageAttributes={
+                's3_bucket': {
+                    'StringValue': bucket,
+                    'DataType': 'String'
+                },
+                's3_bucket_key': {
+                    'StringValue': bucket_key,
+                    'DataType': 'String'
+                }
+            })
+        except ClientError as error:
+            logger.exception(f"Couldn't not send the message from the queue: {cls.queue}")
+            raise error
 
-    :param queue: The queue from which to receive messages.
-    :param max_number: The maximum number of messages to receive. The actual number
-                       of messages received might be less.
-    :param wait_time: The maximum time to wait (in seconds) before returning. When
-                      this number is greater than zero, long polling is used. This
-                      can result in reduced costs and fewer false empty responses.
-    :return: The list of Message objects received. These each contain the body
-             of the message and metadata and custom attributes.
-    """
-    try:
-        messages = queue.receive_messages(
-            MessageAttributeNames=['All'],
-            MaxNumberOfMessages=max_number,
-            WaitTimeSeconds=wait_time
-        )
-        for msg in messages:
-            logger.info("Received message: %s: %s", msg.message_id, msg.body)
-    except ClientError as error:
-        logger.exception("Couldn't receive messages from queue: %s", queue)
-        raise error
-    else:
-        return messages
 
-while True:
-    received_messages = receive_messages(queue, 1, 2)
-    for message in received_messages:
-        print(message.message_attributes['s3_bucket']['StringValue'])
-        print(message.message_attributes['s3_bucket_key']['StringValue'])
-        message.delete()
-    if not received_messages:
-        break
-print('Done.')
+    def receive_message(cls):
+        try:
+            messages = cls.queue.receive_messages(
+                MessageAttributeNames=['All'],
+                MaxNumberOfMessages=1,
+            )
+            
+            cls.message = messages[0]
+            s3_bucket = cls.message.message_attributes['s3_bucket']['StringValue']
+            s3_bucket_key = cls.message.message_attributes['s3_bucket_key']['StringValue']
+            
+
+        except ClientError as error:
+            logger.exception(f"Couldn't receive messages from queue: {cls.queue}")
+            raise error
+        else:
+            return s3_bucket, s3_bucket_key
+
+
+    def delete_message(cls):
+        cls.message.delete()
