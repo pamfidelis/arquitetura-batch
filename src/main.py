@@ -43,6 +43,10 @@ s3.download_file(model_file_bucket, model_file_bucket)
 # download of file
 s3.download_file(input_file_bucket, input_file_local)
 
-predict_model(input_file_local, model_file_bucket)
+output_path = predict_model(input_file_local, model_file_bucket)
+
+output_bucket = os.path.join(output_bucket, output_path.split('/')[-1])
+
+s3.upload_file(output_path, output_bucket)
 
 queue.delete_message()
