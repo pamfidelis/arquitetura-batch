@@ -1,0 +1,15 @@
+{
+  "terminal.integrated.shellArgs.linux":[
+     "-c",
+     "source .env/bin/activate"
+  ],
+  "python.terminal.activateEnvironment":true,
+  "files.watcherExclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/some-soft-link-to-higher-level-directory-in-my-file-system" : true,
+    "**/.cache-loader" : true,
+    "**/.env/**": true
+  }
+}

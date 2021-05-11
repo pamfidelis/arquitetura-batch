@@ -1,0 +1,3 @@
+aws_components:
+  bucket_s3: "arq-batch-s3"
+  sqs: "arq-batch-sqs"
