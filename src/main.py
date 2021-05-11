@@ -19,6 +19,7 @@ yaml_file = load_yaml()
 bucket_name = yaml_file['aws_components']['s3']['name']
 
 input_file_bucket = yaml_file['aws_components']['s3']['input_file']
+input_file_local = os.path.join('data/input', input_file_bucket.split('/')[-1])
 
 output_bucket = yaml_file['aws_components']['s3']['output_key']
 
@@ -37,5 +38,11 @@ s3 = DataLake(s3_bucket)
 
 # download of the model
 s3.download_file(model_file_bucket, model_file_bucket)
+
+
+print(input_file_bucket)
+print(input_file_local)
+# download of file
+s3.download_file(input_file_bucket, input_file_local)
 
 queue.delete_message()
