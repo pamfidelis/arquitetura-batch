@@ -4,7 +4,7 @@ import yaml
 import logging
 import os
 
-sys.path.append('/home/pfidelis/Downloads/aws/arquitetura-batch-case')
+sys.path.append('.')
 from utils.sqs import SQSQueue
 from utils.s3 import DataLake
 from model.model import predict_model
