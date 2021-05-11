@@ -7,6 +7,7 @@ import os
 sys.path.append('/home/pfidelis/Downloads/aws/arquitetura-batch-case')
 from utils.sqs import SQSQueue
 from utils.s3 import DataLake
+from model.model import predict_model
 
 # Load YAM
 def load_yaml():
@@ -39,10 +40,9 @@ s3 = DataLake(s3_bucket)
 # download of the model
 s3.download_file(model_file_bucket, model_file_bucket)
 
-
-print(input_file_bucket)
-print(input_file_local)
 # download of file
 s3.download_file(input_file_bucket, input_file_local)
+
+predict_model(input_file_local, model_file_bucket)
 
 queue.delete_message()
