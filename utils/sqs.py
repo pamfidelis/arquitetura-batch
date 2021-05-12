@@ -5,6 +5,17 @@ import boto3
 logger = logging.getLogger(__name__)
 
 class SQSQueue:
+    """
+    Class used to connect a Amazon SQS
+
+    method availables:
+    - mock_send_message: the purpose of this method is to simulate the reception of events coming from S3
+    - receive_message: fetch messages in the queue
+
+
+    :param queue_name: existing queue name in sqs
+
+    """
     def __init__(self, queue_name):
         sqs = boto3.resource('sqs')
         self.queue = sqs.get_queue_by_name(QueueName=queue_name)
