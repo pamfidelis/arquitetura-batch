@@ -4,12 +4,13 @@ Arquitetura batch de uma plataforma de ML usando componentes da AWS.
 
 Esse projeto visa simular o funcionamento a etapa 7 a partir da fila batch proposto na arquitetura batch.
 
+
 ## Guia
 
 ### Pré requisitos
-
 Para execução do projeto localmente é necessário ter o ambiente previamente configurado:
-* Instalação dos seguintes softwares
+
+### Instalação do software
 
 ```
 Docker 
