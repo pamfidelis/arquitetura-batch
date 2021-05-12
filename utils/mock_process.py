@@ -10,7 +10,7 @@ from src.s3 import DataLake
 def main(yaml_file):
     bucket_name = yaml_file['aws_components']['s3']['name']
     model_path = yaml_file['aws_components']['s3']['model_file']
-    input_path = yaml_file['aws_components']['s3']['input_file']
+    input_path = yaml_file['aws_components']['s3']['input_key']
     sqs_queue = yaml_file['aws_components']['sqs']
 
     s3_client = DataLake(bucket_name)
