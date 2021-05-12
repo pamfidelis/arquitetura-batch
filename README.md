@@ -13,31 +13,57 @@ Para execução do projeto localmente é necessário ter o ambiente previamente 
 
 ```
 Docker 
-Python - versão 3.8.5
 ```
 
-* Confguração as credencias da AWS. [Consulte aqui como configurar.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-* Ter uma fila SQS
-* Ter um bucket no S3.
+#### Configuração das credenciais da AWS
+* [Consulte aqui como configurar.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html)
 
+#### Fila SQS
+Configuração da fila:
+    * Nome:  arq-batch-sqs
+
+### S3
+* Configurações do bucket:
+    * Nome: arq-batch-s3
+
+
+### Instalação e execução
+```
+docker build \
+-t pamfidelis/arq-batch-aws \
+--build-arg AWS_ACCESS_KEY_ID=$(echo $AWS_ACCESS_KEY_ID) \
+--build-arg AWS_SECRET_ACCESS_KEY=$(echo $AWS_SECRET_ACCESS_KEY) \
+--build-arg AWS_DEFAULT_REGION=$(echo $AWS_DEFAULT_REGION) \
+--no-cache .
+
+
+docker run pamfidelis/arq-batch-aws
+```
 
 ### Estrutura de pastas
 
     config: contém um arquivo yaml com as configurações do projeto
-    data: usada para download dos arquivos necessários para execução
+    data: 
+        input: usada para download do dataset de entrada
+        output: resultado do modelo
     docs: contém a arquitetura batch completa
     model: código do modelo
-    src: código principal de execução
-    utils: contém códigos auxiliares para execução:
+    src: 
+        main.py código principal de execução
         s3.py - classe que se conecta no S3
         sqs.py - classe que se conecta no SQS
-        train_model.py - script usado para treino de um modelo dumb, geração de um pickle e envio para um bucket no S3
+    utils: contém códigos auxiliares para execução:
+        train_model.py - script usado para treino de um modelo dumb
+        config.py: fazer load do arquivo de ocnfiguração
+        mock_process.py: passo a passo simulando as etapas  1, 2 e 3
+        send_message.py: simula a etapa 3, onde é enviado o evento para a fila
 
 ## Backlog
 * Alterar a forma de download e upload dos arquivos para que sejam salvos em memória;
 * Melhorar a forma como os logs são lançados;
 * Transformar a arquitetura em streaming;
 * Fazer a tratativa do método receive_message() da classe SQSQueue() para lidar com fila vazia;
+* Automatizar a criação de bucket e da fila
 
 ## Referencias
 * [Dataset usado](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) 
