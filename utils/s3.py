@@ -4,25 +4,25 @@ import boto3
 
 logger = logging.getLogger(__name__)
 
-class DataLake():
-    def __init__(cls, bucket_name):        
+class DataLake:
+    def __init__(self, bucket_name):        
         s3 = boto3.resource('s3')
-        cls.bucket = s3.Bucket(bucket_name)
+        self.bucket = s3.Bucket(bucket_name)
 
     
-    def download_file(cls, source, target):
+    def download_file(self, source, target):
         try:
-            cls.bucket.download_file(source, target)
+            self.bucket.download_file(source, target)
 
 
         except ClientError as error:
             logger.exception(f"Couldn't download file from S3")
             raise error
-    
 
-    def upload_file(cls, source, target):
+
+    def upload_file(self, source, target):
         try:
-           cls.bucket.upload_file(source, target)
+           self.bucket.upload_file(source, target)
             
         except ClientError as error:
             logger.exception(f"Couldn't upload file to S3")
