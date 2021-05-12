@@ -2,6 +2,6 @@ aws_components:
   s3:
     name: "arq-batch-s3"
     input_file: "input/salary.csv"
-    output_key: "output"
+    output_key: "output/score.csv"
     model_file: "model/predicting_salaries.pkl"
   sqs: "arq-batch-sqs"
