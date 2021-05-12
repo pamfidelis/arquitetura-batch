@@ -2,7 +2,7 @@
 
 Arquitetura batch de uma plataforma de ML usando componentes da AWS.
 
-Esse projeto visa simular o funcionamento a etapa 7 a partir da fila batch proposto na arquitetura batch.
+Esse projeto visa simular o funcionamento a etapa 7 a partir da fila batch proposto na arquitetura batch [clique aqui](https://github.com/pamfidelis/arquitetura-batch-case/blob/main/docs/arquitetura_batch.png)
 
 
 ## Guia
