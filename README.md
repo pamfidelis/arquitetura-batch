@@ -1,4 +1,4 @@
-# Case - Arquitetura Batch
+# Arquitetura Batch
 
 Arquitetura batch de uma plataforma de ML usando componentes da AWS.
 
